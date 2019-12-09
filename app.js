@@ -5,7 +5,7 @@ const apiDenVTydnu = require('./api-denvtydnu').apiDenVTydnu;
 const apiSvatky = require('./api-svatky').apiSvatky;
 const apiChat = require('./api-chat').apiChat;
 
-const PORT = 8080;
+const PORT = 8081;
 let citac = 0;
 
 function processStaticFiles(res, fileName) {

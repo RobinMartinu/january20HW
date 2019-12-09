@@ -33,7 +33,13 @@
         }
         function posliZpravu() {
             let chatmsg = document.getElementById("chatmsg").value;
-            fetch(HOST+"/chat/addmsg?msg="+chatmsg).then(function(response) {
+            let body = {};
+            body.msg = chatmsg;
+            let opt = {};
+            opt.method = "POST";
+            opt.body = JSON.stringify(body);
+
+            fetch(HOST+"/chat/addmsg", opt).then(function(response) {
                 response.text().then(function(text) {
                     // nemusim delat nic
                 });

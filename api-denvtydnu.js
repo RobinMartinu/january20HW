@@ -4,7 +4,6 @@ const DNY_V_TYDNU = ["Neděle","Pondělí","Úterý","Středa","Čtvrtek","Páte
 exports.apiDenVTydnu = function (req, res) {
     res.writeHead(200, {
         "Content-type": "application/json",
-        "Access-Control-Allow-Origin":"*"
     });
     let d = new Date();
     let obj = {};
