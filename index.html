@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Moje single page application</title>
+    <script src = "index.js"></script>
     <script>
         const HOST = window.location.protocol + "//" + window.location.hostname + ((window.location.port) ? ":" + window.location.port : "");
         function nactiSvatky() {
@@ -61,22 +62,54 @@
 </head>
 <body onload="nactiSvatky()">
 
-<h1>appka</h1>
+<h1>Chat</h1>
+<div style = "display: inline">
+<input id = "btnLogin" onclick = "showLogin()" type = button width = "30px" height = "18px" value = "Login">
+<input id = "btnRegister" onclick = "showRegister()" type = button width = "30px" height = "18px" value = "Register" style = "margin-left: 18px;">
+<input id = "btnLogout" onclick = "logout()" type = button width = "30px" height = "18px" value = "Logout" style = "display: none ; margin-left : 72px;">
 
+    <br> <br>
+</div>
+
+<div id = "divLogin" style = "display: none; width: 200px; outline: black solid 1px">
+    <input id = logName type = text placeholder="Jméno" style = "margin: 3px 3px 3px 3px">
+    <input id = logPass1 type = password placeholder="Heslo" style = "margin-left: 3px;">
+    <input id = logpass2 type = password placeholder="Heslo znovu" style = "margin-left: 3px;">
+
+    <input type = button value = "Přihlásit se"  style = "margin-left: 3px; margin-top: 10px;">
+    <br>
+</div>
+<div id = "divRegister" style = "display: none; width: 200px; outline: black solid 1px">
+    <input id = regName type = text placeholder="Jméno" style = "margin: 3px 3px 3px 3px">
+    <input id = regEmail type = text placeholder="Email" style = "margin-left: 3px ">
+    <input id = regPass1 type = password placeholder="Heslo" style = "margin-left: 3px; margin-top: 3px;">
+    <input id = regPass2 type = password placeholder="Heslo znovu" style = "margin-left: 3px;  margin-top: 3px;">
+
+    <input type = button value = "Zaregistrovat se" onclick = "register()" style = "margin-left: 3px; margin-top: 10px;">
+    <input type = button value = "Zpět" style = "margin-left: 3px; margin-top:6px; margin-bottom: 3px;">
+    <br>
+
+</div>
+
+
+<br>
 Dnes je <span id="datum">...</span> a svátek má <span id="svatek">...</span>, zítra <span id="svatek2">...</span>.
 <br><br>
 
+<div id = "divChat" style = "display: none">
 <h1>chat</h1>
-<div id="chatmsgs"></div>
-<input type="text" id="chatmsg"><input type="button" value="Odešli" onclick="posliZpravu()">
+<div id="chatmsgs"> <!-- div with msgs -->
+</div>
 
+
+<input type="text" id="chatmsg"><input type="button" value="Odešli" onclick="posliZpravu()">
+</div>
 <br><br>
 
 
 <input type="date" id="kalendar" onchange="svatkyPodleKalendare()"> má svátek <span id="svatek3">...</span>.
 <br><br>
 
-<img src="bob.png">
 
 </body>
 </html>
