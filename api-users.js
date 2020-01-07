@@ -33,8 +33,8 @@ exports.apiUser = function (req, res) {
 
                 });
                 let obj = {};
-                obj.username = body.name;
-                obj.email = body.email;
+                obj.username = entities.encode(body.name);
+                obj.email = entities.encode(body.email);
                 obj.password = entities.encode(body.password);
                 obj.time = new Date();
                 users.push(obj);
