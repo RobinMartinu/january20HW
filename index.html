@@ -66,17 +66,16 @@
 <div style = "display: inline">
 <input id = "btnLogin" onclick = "showLogin()" type = button width = "30px" height = "18px" value = "Login">
 <input id = "btnRegister" onclick = "showRegister()" type = button width = "30px" height = "18px" value = "Register" style = "margin-left: 18px;">
-<input id = "btnLogout" onclick = "logout()" type = button width = "30px" height = "18px" value = "Logout" style = "display: none ; margin-left : 72px;">
+<input id = "btnLogout" onclick = "logout()" type = button width = "30px" height = "18px" value = "Logout" style = "display: none ; margin-left : 18px;">
 
     <br> <br>
 </div>
 
 <div id = "divLogin" style = "display: none; width: 200px; outline: black solid 1px">
     <input id = logName type = text placeholder="Jméno" style = "margin: 3px 3px 3px 3px">
-    <input id = logPass1 type = password placeholder="Heslo" style = "margin-left: 3px;">
-    <input id = logpass2 type = password placeholder="Heslo znovu" style = "margin-left: 3px;">
+    <input id = logPass type = password placeholder="Heslo" style = "margin-left: 3px;">
 
-    <input type = button value = "Přihlásit se"  style = "margin-left: 3px; margin-top: 10px;">
+    <input type = button value = "Přihlásit se" onclick = "login()" style = "margin-left: 3px; margin-top: 10px;">
     <br>
 </div>
 <div id = "divRegister" style = "display: none; width: 200px; outline: black solid 1px">
