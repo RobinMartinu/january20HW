@@ -1,11 +1,30 @@
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 const crypto = require("crypto");
+const fs = require("fs");
+
 const idLength = 4;
 
 const url = require('url');
 
 let users = [];
+
+if(fs.existsSync("users.json")){
+    users = JSON.parse(fs.readFileSync("users.json").toString());
+
+}
+
+function hash (hashedWord){
+    let mix = crypto.createHash("md5").update(hashedWord).digest("hex");
+    mix = mix.split("").reverse().join(""); //pozpatku
+
+    for (let i = 0; i < 10; i++ ) {
+        mix = crypto.createHash("md5").update(hashedWord).digest("hex");
+    }
+
+    return mix;
+}
+
 
 exports.apiUser = function (req, res) {
     let q = url.parse(req.url, true);
@@ -38,12 +57,13 @@ exports.apiUser = function (req, res) {
                 obj.username = entities.encode(body.name);
 
                 obj.email = entities.encode(body.email);
-                obj.password = entities.encode(body.password);
+                obj.password = hash(entities.encode(body.password));
                 // obj.time = new Date();
                 let id = crypto.randomBytes(idLength/2).toString("hex");
                 obj.id = id;
 
                 users.push(obj);
+                fs.writeFileSync("users.json", JSON.stringify(users, null, 2));
 
                 // users[obj.username] = obj;
                 res.end(JSON.stringify(obj));
@@ -71,12 +91,14 @@ exports.apiUser = function (req, res) {
                 let obj = {};
 
                 let loginName = entities.encode(body.name);
-                let loginPass = entities.encode(body.password);
+                let loginPass = hash(entities.encode(body.password));
 
-                for (let i; i < users.length; i++){
-                    if (users[i].username === loginName && users[i].password === loginPass ){
+                //let i = 0; i < users.length; i++
+                //let i of users
+                for (let u of users){
+                    if (u && u.username === loginName && u.password === loginPass ){
                         obj.credentialsCorrect = true;
-                        obj.name = entities.decode(users[loginName].name);
+                        obj.name = entities.decode(u.name);
                         break;
                     }
                     obj.credentialsCorrect = false;

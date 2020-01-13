@@ -47,6 +47,12 @@
             });
         }
         function seznamZprav() {
+            if (user.logged){
+                document.getElementById("divChat").style.display = "block";
+            } else {
+                document.getElementById("divChat").style.display = "none";
+            }
+
             fetch(HOST+"/chat/listmsgs").then(function(response) {
                 response.text().then(function(text) {
                     let obj = JSON.parse(text);
