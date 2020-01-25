@@ -6,11 +6,15 @@ let isRegister = false;
 
 function showLogin(){
     if (isLogin){
-        document.getElementById("divLogin").style.display = "none";
         isLogin = false;
+        document.getElementById("divLogin").style.display = "none";
+
     } else {
-        document.getElementById("divLogin").style.display = "block";
         isLogin = true;
+        isRegister = false;
+        document.getElementById("divLogin").style.display = "block";
+        document.getElementById("divRegister").style.display = "none";
+
     }
 }
 
@@ -34,6 +38,7 @@ function login(){
             if (obj.credentialsCorrect) {
                 user.logged = true;
                 user.name = obj.name;
+                user.id = obj.id;
 
                 document.getElementById("divLogin").style.display = "none";
                 document.getElementById("btnLogout").style.display = "inline";
@@ -52,11 +57,15 @@ function logout(){
 
 function showRegister(){
     if (isRegister){
-        document.getElementById("divRegister").style.display = "none";
         isRegister = false;
+        document.getElementById("divRegister").style.display = "none";
+
     } else {
-        document.getElementById("divRegister").style.display = "block";
         isRegister = true;
+        isLogin = false;
+        document.getElementById("divRegister").style.display = "block";
+        document.getElementById("divLogin").style.display = "none";
+
     }
 }
 
@@ -83,13 +92,15 @@ function register(){
                 // nemusim delat nic
                     // uz musi i POST
 
-                let obj = JSON.parse(text);
-                user.id = obj.id;
-                user.logged = true;
-                user.name = name;
+              //  let obj = JSON.parse(text);
+              //  user.id = obj.id;
+              //  user.logged = true;
+              //  user.name = name;
 
+
+              //  document.getElementById("btnLogout").style.display = "inline";
                 document.getElementById("divRegister").style.display = "none";
-                document.getElementById("btnLogout").style.display = "inline";
+                document.getElementById("divLogin").style.display = "block";
 
             });
         });

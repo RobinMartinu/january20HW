@@ -11,7 +11,6 @@ let users = [];
 
 if(fs.existsSync("users.json")){
     users = JSON.parse(fs.readFileSync("users.json").toString());
-
 }
 
 function hash (hashedWord){
@@ -19,7 +18,7 @@ function hash (hashedWord){
     mix = mix.split("").reverse().join(""); //pozpatku
 
     for (let i = 0; i < 10; i++ ) {
-        mix = crypto.createHash("md5").update(hashedWord).digest("hex");
+        mix = crypto.createHash("md5").update(mix).digest("hex");
     }
 
     return mix;
@@ -27,8 +26,8 @@ function hash (hashedWord){
 
 
 exports.apiUser = function (req, res) {
-    let q = url.parse(req.url, true);
-    if (q.pathname == "/user/list") { //users...globalni promenna typu pole deklarovana na zacatku tohoto zdroje
+    
+    if (req.pathname === "/user/list") { //users...globalni promenna typu pole deklarovana na zacatku tohoto zdroje
         res.writeHead(200, {
             "Content-type": "application/json",
         });
@@ -36,28 +35,17 @@ exports.apiUser = function (req, res) {
         obj.users = users;
         res.end(JSON.stringify(obj));
 
-    } else if (q.pathname == "/user/register") {
-        let data = "";
-        req.on('data', function (chunk) {
-            try {
-                data += chunk;
-            } catch (e) {
-                console.error(e);
-            }
-        });
-        req.on('end', function () {
-            req.rawBody = data;
-            if (data) {
-                let body = JSON.parse(data);
+    } else if (req.pathname === "/user/register") {
+
                 res.writeHead(200, {
                     "Content-type": "application/json",
 
                 });
                 let obj = {};
-                obj.username = entities.encode(body.name);
+                obj.username = req.parameters.name;
 
-                obj.email = entities.encode(body.email);
-                obj.password = hash(entities.encode(body.password));
+                obj.email = req.parameters.email;
+                obj.password = hash(req.parameters.password);
                 // obj.time = new Date();
                 let id = crypto.randomBytes(idLength/2).toString("hex");
                 obj.id = id;
@@ -67,31 +55,19 @@ exports.apiUser = function (req, res) {
 
                 // users[obj.username] = obj;
                 res.end(JSON.stringify(obj));
-            }
-        })
 
-    }  else if (q.pathname == "/user/login") {
-        let data = "";
 
-        req.on('data', function (chunk) {
-            try {
-                data += chunk;
-            } catch (e) {
-                console.error(e);
-            }
-        });
-        req.on('end', function () {
-            req.rawBody = data;
-            if (data) {
-                let body = JSON.parse(data);
+
+    }  else if (req.pathname === "/user/login") {
+
                 res.writeHead(200, {
                     "Content-type": "application/json",
 
                 });
                 let obj = {};
 
-                let loginName = entities.encode(body.name);
-                let loginPass = hash(entities.encode(body.password));
+                let loginName = req.parameters.name;
+                let loginPass = hash(req.parameters.password);
 
                 //let i = 0; i < users.length; i++
                 //let i of users
@@ -116,8 +92,6 @@ exports.apiUser = function (req, res) {
                  */
 
                 res.end(JSON.stringify(obj));
-            }
-        })
 
     }
 };
