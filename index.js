@@ -39,6 +39,7 @@ function login(){
                 user.logged = true;
                 user.name = obj.name;
                 user.id = obj.id;
+                user.token = obj.token;
 
                 document.getElementById("divLogin").style.display = "none";
                 document.getElementById("btnLogout").style.display = "inline";

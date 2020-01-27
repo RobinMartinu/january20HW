@@ -8,6 +8,7 @@ const idLength = 4;
 const url = require('url');
 
 let users = [];
+let loggedUsersArr = [];
 
 if(fs.existsSync("users.json")){
     users = JSON.parse(fs.readFileSync("users.json").toString());
@@ -47,7 +48,7 @@ exports.apiUser = function (req, res) {
                 obj.email = req.parameters.email;
                 obj.password = hash(req.parameters.password);
                 // obj.time = new Date();
-                let id = crypto.randomBytes(idLength/2).toString("hex");
+                let id = crypto.randomBytes(idLength).toString("hex");
                 obj.id = id;
 
                 users.push(obj);
@@ -74,7 +75,14 @@ exports.apiUser = function (req, res) {
                 for (let u of users){
                     if (u && u.username === loginName && u.password === loginPass ){
                         obj.credentialsCorrect = true;
+                        let token = crypto.randomBytes(16).toString("hex");
                         obj.name = entities.decode(u.name);
+                        u.token = token; // set into array
+                        obj.token = token;
+                        let loggedUser = {};
+                        loggedUser.name = obj.name;
+                        loggedUser.token = obj.token;
+                        loggedUsersArr[token] = loggedUser;
                         break;
                     }
                     obj.credentialsCorrect = false;
@@ -93,5 +101,27 @@ exports.apiUser = function (req, res) {
 
                 res.end(JSON.stringify(obj));
 
+    }else if (req.pathname === "/user/logout") {
+
+        res.writeHead(200, {
+            "Content-type": "application/json",
+
+        });
+        let obj = {};
+
+        let logoutToken = req.parameters.logoutToken;
+
+        if (loggedUsersArr[logoutToken]){
+            loggedUsersArr[logoutToken] = "";
+        }
+        res.end(JSON.stringify(obj));
+
     }
+
+
+};
+
+exports.getLoggedUser = function (token){
+    let u = loggedUsersArr[token];
+    return u;
 };

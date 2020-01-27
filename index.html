@@ -36,6 +36,8 @@
             let chatmsg = document.getElementById("chatmsg").value;
             let body = {};
             body.msg = chatmsg;
+            body.token = user.token;
+
             let opt = {};
             opt.method = "POST";
             opt.body = JSON.stringify(body);
@@ -43,6 +45,11 @@
             fetch(HOST+"/chat/addmsg", opt).then(function(response) {
                 response.text().then(function(text) {
                     // nemusim delat nic
+                    let obj = JSON.parse(text);
+                    if (obj && (!obj.sent)){
+                        alert ("Omlouváme se, zkuste se znovu přihlásit.");
+                        location.reload();
+                    }
                 });
             });
         }
@@ -53,7 +60,7 @@
                 document.getElementById("divChat").style.display = "none";
             }
 
-            fetch(HOST+"/chat/listmsgs").then(function(response) {
+            fetch(HOST+"/chat/listmsgs?token=" + user.token).then(function(response) {
                 response.text().then(function(text) {
                     let obj = JSON.parse(text);
                     let s = "";
