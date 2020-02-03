@@ -60,7 +60,7 @@ exports.apiUser = function (req, res) {
 
 
     }  else if (req.pathname === "/user/login") {
-
+    console.log ("fetch na login");
                 res.writeHead(200, {
                     "Content-type": "application/json",
 
@@ -76,13 +76,14 @@ exports.apiUser = function (req, res) {
                     if (u && u.username === loginName && u.password === loginPass ){
                         obj.credentialsCorrect = true;
                         let token = crypto.randomBytes(16).toString("hex");
-                        obj.name = entities.decode(u.name);
+                        obj.name = entities.decode(u.username);
                         u.token = token; // set into array
                         obj.token = token;
                         let loggedUser = {};
                         loggedUser.name = obj.name;
                         loggedUser.token = obj.token;
                         loggedUsersArr[token] = loggedUser;
+                        console.log(loggedUsersArr);
                         break;
                     }
                     obj.credentialsCorrect = false;
@@ -102,7 +103,7 @@ exports.apiUser = function (req, res) {
                 res.end(JSON.stringify(obj));
 
     }else if (req.pathname === "/user/logout") {
-
+    console.log ("fetch na logout");
         res.writeHead(200, {
             "Content-type": "application/json",
 
@@ -110,9 +111,10 @@ exports.apiUser = function (req, res) {
         let obj = {};
 
         let logoutToken = req.parameters.logoutToken;
-
+        console.log(loggedUsersArr);
         if (loggedUsersArr[logoutToken]){
             loggedUsersArr[logoutToken] = "";
+            console.log(loggedUsersArr);
         }
         res.end(JSON.stringify(obj));
 

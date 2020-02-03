@@ -53,7 +53,20 @@ function login(){
 }
 
 function logout(){
-    location.reload();
+    let body = {};
+    body.logoutToken = user.token;
+    let opt = {};
+    opt.method = "POST";
+    opt.body = JSON.stringify(body);
+
+
+        fetch (HOST + "/user/logout", opt).then(function(response){
+          response.text().then(function(text){
+              location.reload();
+          })
+        });
+
+
 }
 
 function showRegister(){
