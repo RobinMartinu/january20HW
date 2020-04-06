@@ -5,6 +5,7 @@ const apiDenVTydnu = require('./api-denvtydnu').apiDenVTydnu;
 const apiSvatky = require('./api-svatky').apiSvatky;
 const apiChat = require('./api-chat').apiChat;
 const apiUser = require('./api-users').apiUser;
+const apiCaptcha = require('./api-captcha').apiCaptcha;
 
 const createSpaServer = require("spaserver").createSpaServer;
 

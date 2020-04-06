@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Captcha</title>
+    <script>
+        const HOST = window.location.protocol + "//" + window.location.hostname + ((window.location.port) ? ":" + window.location.port : "");
+        let kapcaId;
+        function ukazKapcu() {
+            document.getElementById("verification_result").innerHTML = ``;
+            let url = `${HOST}/captcha/next`;
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    let obj = JSON.parse(text);
+                    kapcaId = obj.uid;
+                    document.getElementById("captcha").innerHTML = `<img src="${HOST}/captcha/img?uid=${obj.uid}">`;
+                    document.getElementById("code").value = "";
+                    document.getElementById("code").focus();
+                });
+            });
+        }
+        function overKapcu() {
+            let code = document.getElementById("code").value;
+            let url = `${HOST}/captcha/verify?uid=${kapcaId}&code=${code}`;
+            if (document.getElementById("case_sensitive").checked) {
+                url += "&cs=1";
+            }
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    let obj = JSON.parse(text);
+                    if (obj.verified === true) {
+                        document.getElementById("verification_result").innerHTML = `<span style="background-color: greenyellow">OK...</span>`;
+                        setTimeout(ukazKapcu, 1000);
+                    } else {
+                        document.getElementById("verification_result").innerHTML = `<span style="background-color: coral">špatně! :-(</span>`;
+                        if (obj.expired) {
+                            ukazKapcu();
+                        }
+                    }
+                });
+            });
+        }
+        function spustPoNacteni() {
+            ukazKapcu();
+            // osetreni stisku klavesy Enter
+            document.getElementById("code").addEventListener("keyup", function(event) {
+                if (event.code === "Enter") {
+                    event.preventDefault(); // Cancel the default action, if needed
+                    overKapcu();
+                }
+            });
+        }
+    </script>
+</head>
+<body onload="spustPoNacteni()">
+
+<h1>Captcha</h1>
+<input type="checkbox" id="case_sensitive">rozlišovat velikost písmen
+<br><br>
+
+<div id="captcha">...</div>
+<input type="text" id="code"><input type="button" value="Ověřit" onclick="overKapcu()">
+<div id="verification_result">...</div>
+
+</body>
+</html>
